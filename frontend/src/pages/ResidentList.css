@@ -1,0 +1,100 @@
+.resident-list-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
+    border: 1px solid #c8e6c9;
+  }
+  
+  .resident-list-container h2 {
+    color: #2e7d32;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .residents-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  
+  .residents-table th,
+  .residents-table td {
+    border: 1px solid #81c784;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .residents-table th {
+    background-color: #c8e6c9;
+    color: #1b5e20;
+    font-weight: 600;
+  }
+  
+  .residents-table tr:nth-child(even) {
+    background-color: #f1f8e9;
+  }
+  
+  .residents-table tr:hover {
+    background-color: #e8f5e9;
+  }
+  
+  .delete-btn {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .delete-btn:hover {
+    background-color: #b71c1c;
+  }
+  
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #2e7d32;
+  }
+  
+  .error-message {
+    color: #c62828;
+    background-color: #ffebee;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    border: 1px solid #ef9a9a;
+    text-align: center;
+  }
+  
+  /* Empty state */
+  .resident-list-container p {
+    text-align: center;
+    color: #666;
+    font-size: 1.1rem;
+    margin: 2rem 0;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .resident-list-container {
+      margin: 1rem;
+      padding: 1rem;
+    }
+  
+    .residents-table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+  
+    .residents-table th,
+    .residents-table td {
+      padding: 8px;
+    }
+  }
