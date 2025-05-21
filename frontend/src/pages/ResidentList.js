@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import './ResidentList.css';
 
 const ResidentList = () => {
@@ -76,16 +77,24 @@ const ResidentList = () => {
                 <td>{`${resident.firstName} ${resident.middleName ? resident.middleName + ' ' : ''}${resident.lastName}`}</td>
                 <td>{resident.contactNumber}</td>
                 <td>{resident.address ? 
-                  `${resident.address.street}, ${resident.address.barangay}, ${resident.address.city}` : 
+                  `${resident.address.street || ''}, ${resident.address.barangay || ''}, ${resident.address.city || ''}` : 
                   'N/A'}</td>
                 <td>{resident.civilStatus}</td>
                 <td>
-                  <button 
-                    className="delete-btn"
-                    onClick={() => handleDelete(resident._id)}
-                  >
-                    Delete
-                  </button>
+                  <div className="action-buttons">
+                    <Link 
+                      to={`/edit-resident/${resident._id}`} 
+                      className="edit-btn"
+                    >
+                      Edit
+                    </Link>
+                    <button 
+                      className="delete-btn"
+                      onClick={() => handleDelete(resident._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

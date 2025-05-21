@@ -92,10 +92,17 @@ exports.createResident = async (req, res) => {
   }
 };
 
-// Get all residents
+// Modified version of the getAllResidents function in controllers/residentControllers.js
 exports.getAllResidents = async (req, res) => {
   try {
-    const residents = await Resident.find();
+    let query = {};
+    
+    // Check if a residentId was provided in the query
+    if (req.query.residentId) {
+      query.residentId = req.query.residentId;
+    }
+    
+    const residents = await Resident.find(query);
     res.status(200).json({
       success: true,
       count: residents.length,

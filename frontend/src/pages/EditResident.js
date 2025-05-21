@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './ResidentForm.css';
 
-const ResidentRegistration = () => {
+const EditResident = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [residentData, setResidentData] = useState({
@@ -28,6 +30,52 @@ const ResidentRegistration = () => {
     monthlyIncome: '',
     voterStatus: false
   });
+
+  useEffect(() => {
+    fetchResident();
+  }, [id]);
+
+  const fetchResident = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`http://localhost:5000/api/residents/${id}`);
+      
+      if (response.data && response.data.success) {
+        const resident = response.data.data;
+        
+        // Format the date to YYYY-MM-DD for input[type="date"]
+        const formattedDate = resident.dateOfBirth ? 
+          new Date(resident.dateOfBirth).toISOString().split('T')[0] : '';
+        
+        setResidentData({
+          ...resident,
+          dateOfBirth: formattedDate,
+          // Ensure address object is properly structured
+          address: {
+            street: resident.address?.street || '',
+            houseNumber: resident.address?.houseNumber || '',
+            barangay: resident.address?.barangay || '',
+            city: resident.address?.city || '',
+            province: resident.address?.province || '',
+            zipCode: resident.address?.zipCode || ''
+          },
+          // Set default values for empty fields
+          middleName: resident.middleName || '',
+          email: resident.email || '',
+          occupation: resident.occupation || '',
+          monthlyIncome: resident.monthlyIncome || 0,
+          voterStatus: resident.voterStatus || false
+        });
+      } else {
+        setError('Failed to fetch resident data');
+      }
+    } catch (error) {
+      console.error('Error fetching resident:', error);
+      setError('Failed to fetch resident data');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -68,56 +116,32 @@ const ResidentRegistration = () => {
         monthlyIncome: residentData.monthlyIncome === '' ? 0 : parseFloat(residentData.monthlyIncome)
       };
 
-      console.log('Sending data:', JSON.stringify(dataToSend, null, 2));
-
-      const response = await axios.post('http://localhost:5000/api/residents', dataToSend);
+      const response = await axios.put(`http://localhost:5000/api/residents/${id}`, dataToSend);
       
       if (response.data.success) {
-        setSuccess('Resident registered successfully!');
-        // Reset form
-        setResidentData({
-          firstName: '',
-          lastName: '',
-          middleName: '',
-          dateOfBirth: '',
-          gender: '',
-          civilStatus: '',
-          contactNumber: '',
-          email: '',
-          address: {
-            street: '',
-            houseNumber: '',
-            barangay: '',
-            city: '',
-            province: '',
-            zipCode: ''
-          },
-          occupation: '',
-          monthlyIncome: '',
-          voterStatus: false
-        });
-        
-        // Redirect to resident list after 2 seconds
+        setSuccess('Resident updated successfully!');
+        // Redirect after a short delay
         setTimeout(() => {
           navigate('/residents');
         }, 2000);
       }
     } catch (error) {
-      console.error('Full error:', error);
-      console.error('Error response:', error.response);
+      console.error('Update error:', error);
       if (error.response) {
-        console.error('Error status:', error.response.status);
-        console.error('Error data:', error.response.data);
-        setError(`Error: ${error.response.data.error || error.response.data.message || 'Unknown error'}`);
+        setError(`Error: ${error.response.data.message || error.response.data.error || 'Failed to update resident'}`);
       } else {
         setError('Network error or server is not responding');
       }
     }
   };
 
+  if (loading) {
+    return <div className="loading">Loading resident data...</div>;
+  }
+
   return (
     <div className="resident-form-container">
-      <h2>Resident Registration Form</h2>
+      <h2>Edit Resident</h2>
       
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">{success}</div>}
@@ -331,11 +355,11 @@ const ResidentRegistration = () => {
           <button type="button" className="cancel-btn" onClick={() => navigate('/residents')}>
             Cancel
           </button>
-          <button type="submit" className="submit-btn">Register Resident</button>
+          <button type="submit" className="submit-btn">Update Resident</button>
         </div>
       </form>
     </div>
   );
 };
 
-export default ResidentRegistration;
+export default EditResident;

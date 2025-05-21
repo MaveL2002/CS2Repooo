@@ -1,22 +1,43 @@
-// src/components/Navbar.js
+// src/pages/Home.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import './Home.css';
 
-const Navbar = () => {
+const Home = () => {
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">
-        <h1>Adopt-a-Barangay</h1>
+    <div className="home-container">
+      <div className="hero-section">
+        <h1>Welcome to Barangay Hinaplanon</h1>
+        <p>A management system for barangay residents and services</p>
       </div>
-      <ul className="navbar-menu">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/register">Register Resident</Link></li>
-        <li><Link to="/residents">View Residents</Link></li>
-        <li><Link to="/qr-generator">QR Generator</Link></li>
-        <li><Link to="/backup">Data Backup</Link></li>
-      </ul>
-    </nav>
+
+      <div className="features-grid">
+        <div className="feature-card">
+          <h3>Resident Registration</h3>
+          <p>Register new residents in the barangay database with comprehensive profile information.</p>
+          <Link to="/register" className="feature-link">Register Residents</Link>
+        </div>
+        
+        <div className="feature-card">
+          <h3>Resident Management</h3>
+          <p>View, edit, and manage resident profiles with easy-to-use interface.</p>
+          <Link to="/residents" className="feature-link">Manage Residents</Link>
+        </div>
+        
+        <div className="feature-card">
+          <h3>QR Code Generation</h3>
+          <p>Generate QR codes for resident identification and quick profile access.</p>
+          <Link to="/qr-generator" className="feature-link">Generate QR Codes</Link>
+        </div>
+        
+        <div className="feature-card">
+          <h3>Data Backup & Recovery</h3>
+          <p>Create backups of resident data in various formats for safe record keeping.</p>
+          <Link to="/backup" className="feature-link">Backup Data</Link>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Navbar;
+export default Home;

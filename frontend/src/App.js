@@ -6,7 +6,9 @@ import Home from './pages/Home';
 import ResidentRegistration from './pages/ResidentRegistration';
 import ResidentList from './pages/ResidentList';
 import QRCodeGenerator from './pages/QRCodeGenerator';
+import QRScanner from './pages/QRScanner';
 import DataBackup from './pages/DataBackup';
+import EditResident from './pages/EditResident';
 import './App.css';
 
 function App() {
@@ -19,7 +21,9 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<ResidentRegistration />} />
             <Route path="/residents" element={<ResidentList />} />
+            <Route path="/edit-resident/:id" element={<EditResident />} />
             <Route path="/qr-generator" element={<QRCodeGenerator />} />
+            <Route path="/qr-scanner" element={<QRScanner />} />
             <Route path="/backup" element={<DataBackup />} />
           </Routes>
         </main>
